@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Check
+{% endblock %}
+
+{% block main %}
+
+    {% if dndRace[0] == 'A' or dndRace[0] == 'E' or dndRace[0] == 'I' or dndRace[0] == 'O' or dndRace[0] == 'U' %}
+        Your generated character is an {{ dndRace }} {{ dndClass }} named {{ dndName }}
+
+    {% else %}
+        Your generated character is a {{ dndRace }} {{ dndClass }} named {{ dndName }}
+
+    {% endif %}
+
+    <br><br>
+
+    Randomly rolled stats for character:
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for key in stats %}
+                    <th class="text-start">{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <body>
+            <tr>
+                {% for key in stats %}
+                    <td class="text-start">{{ stats[key] }}</td>
+                {% endfor %}
+            </tr>
+        </body>
+    </table>
+
+    <br><br>
+
+    <form action="/confirmchar/{{dndClass}}/{{dndRace}}/{{dndName}}" method="post">
+        <div class="mb-3">
+            <h6>Do you want to add this character to Your Characters?</h6>
+            <br>
+            <button class="btn btn-secondary" type="submit" id="option" name="option" value="yes">Yes</button>
+            <button class="btn btn-secondary" type="submit" id="option" name="option" value="no">No</button>
+        </div>
+    </form>
+{% endblock %}

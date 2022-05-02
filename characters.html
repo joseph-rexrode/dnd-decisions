@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Characters
+{% endblock %}
+
+{% block main %}
+    <div class="mb-3">
+        <h1>Your Characters</h1>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-start">Name</th>
+                <th class="text-start">Class</th>
+                <th class="text-start">Race</th>
+                <th class="text-end">
+                    <button type="button" class="btn btn-secondary" id="showStats" name="showStats" value="showStats" style="visibility: hidden">
+                        See Stats
+                    </button>
+                </th>
+                <th class="text-end">
+                    <button type="button" class="btn btn-secondary" id="hideStats" name="hideStats" value="hideStats">
+                        Hide Stats
+                    </button>
+                </th>
+                <form action="/chars" method="post">
+                    <th class="text-end">
+                        <select required class="form-select" aria-label="form-select" id="rerolls" name="rerolls">
+                            <option value="">Choose Character</option>
+                            {% for character in characters %}
+                                <option value="{{ character['name'] }}">{{ character["name"] }}</option>
+                            {% endfor %}
+                        </select>
+                    </th>
+                    <th class="text-end">
+                        <button type="submit" class="btn btn-secondary" id="reroll" name="reroll" value="reroll">
+                            Reroll?
+                        </button>
+                    </th>
+                </form>
+            </tr>
+        </thead>
+        <body>
+            {% for character in characters %}
+                <tr>
+                    <td class="text-start">{{ character["name"] }}</td>
+                    <td class="text-start">{{ character["class"] }}</td>
+                    <td class="text-start">{{ character["race"] }}</td>
+
+                    {% for stat in stats %}
+                        {% if stat["char_id"] == character["id"] %}
+                            {% for column in stat %}
+                                {% if column != "char_id" %}
+                                    <td class="text-end">{{ column }}: {{ stat[column] }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <form action="/charsremove" method="post">
+                        <td class="text-start">
+                            <input type="checkbox" required name="{{character['name']}}" value="{{character['name']}}"></button>
+                            <button type="submit" id="{{character['name']}}" class="btn btn-secondary">Remove?</button>
+                        </td>
+                    </form>
+                </tr>
+            {% endfor %}
+        </body>
+    </table>
+
+    <script>
+
+        // toggle visibility of show stat button and hide stat / reroll button, as well as stats themselves
+        function change_visibility()
+        {
+            let showStats = document.querySelector('#showStats');
+            let hideStats = document.querySelector('#hideStats');
+            let reroll = document.querySelector('#reroll');
+            let form = document.querySelector('.form-select');
+            let stats = document.querySelectorAll('td.text-end');
+
+            for (let i = 0; i < stats.length; i++)
+            {
+                if (stats[i].style.visibility != 'hidden')
+                {
+                    stats[i].style.visibility = 'hidden';
+                }
+                else
+                {
+                    stats[i].style.visibility = 'visible';
+                }
+            }
+
+            if (showStats.style.visibility != 'hidden')
+            {
+                showStats.style.visibility = 'hidden';
+                hideStats.style.visibility = 'visible';
+                reroll.style.visibility = 'visible';
+                form.style.visibility = 'visible';
+            }
+            else
+            {
+                showStats.style.visibility = 'visible';
+                hideStats.style.visibility = 'hidden';
+                reroll.style.visibility = 'hidden';
+                form.style.visibility = 'hidden';
+            }
+        }
+
+
+        showStats.addEventListener('click', change_visibility);
+        hideStats.addEventListener('click', change_visibility);
+
+    </script>
+{% endblock %}
