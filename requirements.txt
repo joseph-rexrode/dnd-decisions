@@ -1,0 +1,4 @@
+cs50
+Flask == 2.1.2
+Flask-Session
+requests
