@@ -173,4 +173,10 @@ Another aspect of `characters.html` I'd like to improve in the future is the app
 
 <br/>
 
+## Key Note
+
+<br/>
+
+This application is not able to be deployed to a production environment. GCP was going to be used for this purpose, but it does not support sqlite3. Production-ready formatting may be implemented at a later date using MySQL or other SQL database. Thank you for your understanding. 
+
 Thank you for reading, and for taking the time to look at my project. I had a lot of fun making it from the ground up, and I look forward to creating future projects as well :D
